@@ -1,16 +1,31 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
+import AsyncStorage from '@react-native-async-storage/async-storage' 
 import colors from "../../styles/colors";
 import userImg from "../../assets/profile.png";
 import fonts from "../../styles/fonts";
 
 const Header = () => {
+
+  const [userName, setUserName] = React.useState<string>()
+
+
+// Captura o nome do usuário no dispositivo e seta na tela
+  React.useEffect(() => {
+    const loadStorageUserName = async () => {
+     const user = await AsyncStorage.getItem('@plant_manager:user')
+     setUserName(user || '')
+    }
+    loadStorageUserName()
+  },[userName])
+
+
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.greeting}>Olá,</Text>
-        <Text style={styles.username}>Weslley</Text>
+        <Text style={styles.username}>{userName}</Text>
       </View>
       <Image style={styles.image} source={userImg} />
     </View>

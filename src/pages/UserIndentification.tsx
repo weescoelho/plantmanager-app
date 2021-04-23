@@ -1,4 +1,5 @@
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/core"; // Navegação dentro do app (semelhante ao react-router-dom)
+import AsyncStorage from '@react-native-async-storage/async-storage' // Salva dados no device (semelhante ao localStorage)
 import React from "react";
 import {
   SafeAreaView,
@@ -10,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Keyboard,
+  Alert
 } from "react-native";
 import Button from "../components/Button/Button";
 import colors from "../styles/colors";
@@ -22,8 +24,15 @@ const UserIndentification = () => {
 
   const navigation = useNavigation();
 
-  function handleSubmit() {
-    navigation.navigate("Confirmation");
+  async function handleSubmit() {
+    if(!name) 
+      return Alert.alert('Me diz como chamar você')
+    try{
+      await AsyncStorage.setItem('@plant_manager:user', name)
+      navigation.navigate("Confirmation");
+    }catch{
+      Alert.alert('Não foi possível salver o seu nome')
+    }
   }
 
   function handleInputBlur() {
