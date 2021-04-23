@@ -29,7 +29,13 @@ const UserIndentification = () => {
       return Alert.alert('Me diz como chamar você')
     try{
       await AsyncStorage.setItem('@plant_manager:user', name)
-      navigation.navigate("Confirmation");
+      navigation.navigate("Confirmation", { 
+        title:'Prontinho',
+        subtitle:'Agora vamos começar a cuidar das suas plantinhas com muito cuidado',
+        buttonTitle:'Começar',
+        icon: 'smile',
+        nextScreen:'PlantSelect'
+      });
     }catch{
       Alert.alert('Não foi possível salver o seu nome')
     }

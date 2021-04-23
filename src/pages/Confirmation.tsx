@@ -1,29 +1,51 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/core";
 import React from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Button from "../components/Button/Button";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
+interface Params {
+  title: string;
+  subtitle: string;
+  buttonTitle: string;
+  icon: "smile" | "hug";
+  nextScreen: string;
+}
+
+const emojis = {
+  hug: "🤗",
+  smile: "😄",
+};
+
 const Confirmation = () => {
+  const routes = useRoute();
+
+  const {
+    title,
+    subtitle,
+    buttonTitle,
+    icon,
+    nextScreen,
+  } = routes.params as Params;
 
   const navigation = useNavigation();
 
-  function handleMoveOn(){
-    navigation.navigate('PlantSelect')
+  function handleMoveOn() {
+    navigation.navigate(nextScreen);
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.emoji}>😄</Text>
-        <Text style={styles.title}>Prontinho</Text>
+        <Text style={styles.emoji}>{emojis[icon]}</Text>
+        <Text style={styles.title}>{title}</Text>
         <Text style={styles.subtitle}>
-          Agora vamos começar a cuidar das suas plantinhas com muito cuidado.
+          {subtitle}
         </Text>
       </View>
       <View style={styles.footer}>
-        <Button text="Começar" onPress={handleMoveOn}/>
+        <Button text={buttonTitle} onPress={handleMoveOn} />
       </View>
     </SafeAreaView>
   );
@@ -31,14 +53,14 @@ const Confirmation = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  content:{
+  content: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom:40,
+    marginBottom: 40,
   },
   emoji: {
     fontSize: 96,
@@ -59,10 +81,10 @@ const styles = StyleSheet.create({
     color: colors.heading,
     fontFamily: fonts.text,
   },
-  footer:{
+  footer: {
     width: "100%",
     paddingHorizontal: 75,
-  }
+  },
 });
 
 export default Confirmation;
